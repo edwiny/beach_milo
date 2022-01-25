@@ -1,6 +1,6 @@
 # Beach Milo
 
-A small game about a dog and a beach, written in PyGame.
+A small game about a dog and a beach, written in [pygame](https://www.pygame.org/)
 
 
 ## Installation
@@ -14,4 +14,6 @@ pip install pygame==2.1.2
 
 ## Running
 
+```
 python main.py
+```
