@@ -64,8 +64,19 @@ class GameFactory:
         return deep_ocean
 
     @classmethod
+    def get_shallow_ocean(cls):
+        shallow_ocean = milo.gradient.GradientRect(0, SHALLOW_OCEAN_TOP, SCREEN_WIDTH, SHALLOW_OCEAN_HEIGHT)
+        shallow_ocean.vertical_fill((0, 0, 255), (135, 206, 250))
+        return shallow_ocean
+
+
+    @classmethod
     def get_beach(cls):
         return milo.strip.TiledRect(BEACH_TOP, BEACH_HEIGHT, SCREEN_WIDTH, "assets/images/sand.png")
+
+    @classmethod
+    def get_font(cls):
+        return pygame.font.Font("assets/fonts/GothamMedium.ttf", 32)
 
 
 

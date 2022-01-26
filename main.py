@@ -10,7 +10,6 @@ pygame.mixer.init()
 pygame.init()
 pygame.mixer.music.set_volume(0.3)
 clock = pygame.time.Clock()
-font = pygame.font.Font("assets/fonts/GothamMedium.ttf", 32)
 score = 0
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -21,11 +20,14 @@ pygame.time.set_timer(EVENT_ADDCLOUD, 5000)
 
 GameResources.load()
 
+pygame.display.set_icon(GameResources.milo_sprites[0])
 # create player and background objects
 player = GameFactory.get_player()
 sky = GameFactory.get_sky()
 deep_ocean = GameFactory.get_deep_ocean()
+shallow_ocean = GameFactory.get_shallow_ocean()
 beach = GameFactory.get_beach()
+font = GameFactory.get_font()
 
 # create sprite groups to manage rendering and collision detection
 enemies = pygame.sprite.Group()
@@ -85,6 +87,7 @@ while running:
         screen.blit(entity.surf, entity.rect)
     screen.blit(sky.surf, sky.surf.get_rect(topleft=(0, SKY_TOP)))
     screen.blit(deep_ocean.surf, deep_ocean.surf.get_rect(topleft=(0, DEEP_OCEAN_TOP)))
+    screen.blit(shallow_ocean.surf, shallow_ocean.surf.get_rect(topleft=(0, SHALLOW_OCEAN_TOP)))
 
     for entity in visible_sprites:
         screen.blit(entity.surf, entity.rect)
