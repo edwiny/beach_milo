@@ -16,7 +16,7 @@ class Crab(milo.animated_sprite.AnimatedSprite):
         super(Crab, self).__init__(sprites)
 
         self.rect = self.surf.get_rect(topleft=(
-            random.randint(20, SCREEN_WIDTH - 20),
+            random.randint(64, SCREEN_WIDTH - 64),
             random.randint(top_zone, bottom_zone)
         ))
         self.top_zone = top_zone

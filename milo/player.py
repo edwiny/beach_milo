@@ -23,9 +23,8 @@ class Player(AnimatedSprite):
         super(Player, self).__init__(sprites)
         self.rect = self.surf.get_rect(midbottom=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 10))
         self.is_moving = False
+        self.last_bark_time = 0
 
-    # this update method has to be implemented in the Sprite subclass as the Sprite
-    # Groups call it when you call group.update()
     def update(self, pressed_keys):
         saved_state = self.is_moving
 
@@ -51,7 +50,6 @@ class Player(AnimatedSprite):
             self.reset()
             self.is_moving = False
 
-
         if self.rect.left < 0:
             self.rect.left = 0
         if self.rect.right > SCREEN_WIDTH:
@@ -60,11 +58,13 @@ class Player(AnimatedSprite):
             self.rect.top = PLAY_AREA_TOP
         if self.rect.bottom > SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
-        if saved_state == False and self.is_moving == True:
+
+        if (saved_state is False
+                and self.is_moving is True
+                and pygame.time.get_ticks() > self.last_bark_time + 3000):
             pygame.event.post(pygame.event.Event(EVENT_SOUNDBARK))
+            self.last_bark_time = pygame.time.get_ticks()
 
     def animate_running(self):
         if self.millis_since_last_animation() > 40:
             self.forward()
-
-
