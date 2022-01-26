@@ -11,6 +11,7 @@ pygame.init()
 pygame.mixer.music.set_volume(0.3)
 clock = pygame.time.Clock()
 score = 0
+lives = 3
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -47,7 +48,7 @@ running = True
 
 
 def handle_event(gameplay_event):
-    global running
+    global running, visible_sprites, lives, player
     if gameplay_event.type == pygame.KEYDOWN:
         if gameplay_event.key == pygame.K_ESCAPE:
             running = False
@@ -69,6 +70,9 @@ def handle_event(gameplay_event):
         visible_sprites.add(new_cloud)
     elif gameplay_event.type == EVENT_SOUNDBARK:
         bark_sound.play()
+    elif gameplay_event.type == EVENT_PLAYERSPAWN:
+        player = GameFactory.get_player()
+        visible_sprites.add(player)
 
 
 while running:
@@ -91,16 +95,15 @@ while running:
 
     for entity in visible_sprites:
         screen.blit(entity.surf, entity.rect)
-    fs = font.render(f"Score: {score}", False, (255, 255, 255))
-    screen.blit(fs, fs.get_rect(topleft=(SCREEN_WIDTH - (SCREEN_WIDTH / 5), 10)))
+    fs = font.render(f"Lives: {lives} Score: {score}", False, (255, 255, 255))
+    screen.blit(fs, fs.get_rect(topleft=(SCREEN_WIDTH - (SCREEN_WIDTH / 3), 10)))
 
     # collision detection
-    if pygame.sprite.spritecollideany(player, enemies):
-        player.kill()
-        pygame.mixer.music.stop()
-        # collision_sound.play()
-        pygame.time.wait(1000)
-        running = False
+    if pygame.sprite.spritecollideany(player, enemies) and not player.is_dying():
+        player.die()
+        lives -= 1
+        if lives == 0:
+            running = False
 
     disappearing_crabbies = [crab.disappear() for crab in crabbies if pygame.sprite.spritecollide(crab, enemies, False)]
 
@@ -116,6 +119,11 @@ while running:
     # Calcs the delay based on clock ticks and machine speed.
     clock.tick(FPS)
 
+fs = font.render(f"Game Over!", False, (255, 255, 255))
+screen.blit(fs, fs.get_rect(topleft=(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2)))
+pygame.display.flip()
+
+pygame.time.wait(2000)
 pygame.mixer.music.stop()
 pygame.mixer.quit()
 pygame.quit()

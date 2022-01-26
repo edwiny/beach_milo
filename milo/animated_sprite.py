@@ -28,6 +28,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
     def flip(self, flip_x = False, flip_y = False):
         self.flip_x = flip_x
+        self.flip_y = flip_y
 
     def forward(self):
         if self.frame_pos < 0 or self.frame_pos >= len(self.frames):
@@ -82,11 +83,10 @@ class AnimatedTiledSprite(pygame.sprite.Sprite):
         for row in range(self.rows):
             for col in range(self.cols):
                 self.surf.blit(self.frames[self.frame_pos], (col * self.sprite_width, row * self.sprite_height))
-        if self.flip_x or self.flip_y:
-            self.surf = pygame.transform.flip(self.surf, self.flip_x, self.flip_y)
+
         self.last_anim_time = pygame.time.get_ticks()
 
-    def flip(self, flip_x = False, flip_y = False):
+    def flip(self, flip_x=False, flip_y=False):
         self.flip_x = flip_x
         self.flip_y = flip_y
 
@@ -103,3 +103,4 @@ class AnimatedTiledSprite(pygame.sprite.Sprite):
 
     def millis_since_last_animation(self):
         return pygame.time.get_ticks() - self.last_anim_time
+
